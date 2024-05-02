@@ -1,0 +1,5 @@
+venv/
+.terraform/
+terraform.tfvars
+vars.tfbackend
+.terraform.lock.hcl

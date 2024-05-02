@@ -1,0 +1,73 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      actions:
+        description: "Selecting actions for terraform"
+        required: true
+        default: "plan"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+      environment:
+        description: "Selecting evironments for terraform"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - prod
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+          
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: DEPLOY INFRASTRUCTURE
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::590183956208:role/github-oidc-role
+          role-session-name: rolesession
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.3
+          terraform_wrapper: false
+
+      - name: Prepare Terraform
+        env:
+          AWS_REGION: "us-east-1"
+          PROJECT_NAME: "workshop-02"
+          STAGE_NAME: ${{ github.event.inputs.environment }}
+          TERRAFORM_BUCKET_NAME: ${{ secrets.TERRAFORM_BUCKET_NAME }}
+        run: |
+          chmod +x setup.sh
+          bash setup.sh
+          terraform init -backend-config=./vars.tfbackend
+
+      - name: Plan Terraform
+        run: |
+          terraform plan
+        if: ${{ github.event.inputs.actions == 'plan' }}
+
+      - name: Aplly Terraform
+        run: |
+          terraform apply
+        if: ${{ github.event.inputs.actions == 'apply' }}
+
+      - name: Destroy Terraform
+        run: |
+          terraform destroy
+        if: ${{ github.event.inputs.actions == 'destroy' }}
