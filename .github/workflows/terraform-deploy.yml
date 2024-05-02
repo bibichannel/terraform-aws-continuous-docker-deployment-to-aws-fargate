@@ -20,6 +20,9 @@ on:
         options:
           - staging
           - prod
+env:
+  AWS_REGION : "us-east-1" 
+
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
@@ -36,9 +39,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
           role-to-assume: arn:aws:iam::590183956208:role/github-oidc-role
           role-session-name: rolesession
+
+      - name: Print assumed role
+        run: aws sts get-caller-identity
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -48,7 +54,6 @@ jobs:
 
       - name: Prepare Terraform
         env:
-          AWS_REGION: "us-east-1"
           PROJECT_NAME: "workshop-02"
           STAGE_NAME: ${{ github.event.inputs.environment }}
           TERRAFORM_BUCKET_NAME: ${{ secrets.TERRAFORM_BUCKET_NAME }}
