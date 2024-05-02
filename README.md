@@ -49,7 +49,7 @@ It's a comprehensive DevOps workflow that ensures continuous deployment of Docke
 Before we dive into the details of the deployment pipeline, make sure you have the following prerequisites in place:
 
 - **AWS account**: With permissions to create resources specified in the code.
-- **Fork GitHub Repo**: Fork and clone your own [Yris-ops/aws-devops-continuous-docker-deployment-to-aws-fargate](https://github.com/Yris-ops/aws-devops-continuous-docker-deployment-to-aws-fargate) GitHub repository.
+- **Fork GitHub Repo**: Fork and clone your own [bibichannel/terraform-aws-continuous-docker-deployment-to-aws-fargate](https://github.com/bibichannel/terraform-aws-continuous-docker-deployment-to-aws-fargate) GitHub repository.
 - **GitHub Token**: Create an token in GitHub and provide access to the repo scopes.
 - **Terraform**: Installed on your local machine.
 - **Docker**: Installed on your local machine.
