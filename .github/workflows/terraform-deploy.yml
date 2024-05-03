@@ -66,10 +66,10 @@ jobs:
 
       - name: Aplly Terraform
         run: |
-          terraform apply
+          terraform apply -auto-approve
         if: ${{ github.event.inputs.actions == 'apply' }}
 
       - name: Destroy Terraform
         run: |
-          terraform destroy
+          terraform destroy -auto-approve
         if: ${{ github.event.inputs.actions == 'destroy' }}
