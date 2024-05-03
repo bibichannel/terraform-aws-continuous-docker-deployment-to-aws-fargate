@@ -14,6 +14,8 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   tags = {
     Name = "${var.project_name}-${var.stage_name}"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
@@ -22,7 +24,9 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block        = format("10.%d.0.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}a"
   tags = {
-    Name = "public-subnet-1"
+    Name = "${var.project_name}-${var.stage_name}-public-subnet-1"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
@@ -31,7 +35,9 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block        = format("10.%d.1.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}b"
   tags = {
-    Name = "public-subnet-2"
+    Name = "${var.project_name}-${var.stage_name}-public-subnet-2"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
@@ -40,7 +46,9 @@ resource "aws_subnet" "private_subnet_1" {
   cidr_block        = format("10.%d.2.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}a"
   tags = {
-    Name = "private-subnet-1"
+    Name = "${var.project_name}-${var.stage_name}-private-subnet-1"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
@@ -49,14 +57,18 @@ resource "aws_subnet" "private_subnet_2" {
   cidr_block        = format("10.%d.3.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}b"
   tags = {
-    Name = "private-subnet-2"
+    Name = "${var.project_name}-${var.stage_name}-private-subnet-2"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${var.project_name}-igw"
+    Name = "${var.project_name}-${var.stage_name}-igw"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
@@ -81,14 +93,18 @@ resource "aws_route_table" "public_rtb" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "${var.project_name}-public-rtb"
+    Name = "${var.project_name}-${var.stage_name}-public-rtb"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
 resource "aws_route_table" "private_rtb" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "${var.project_name}-private-rtb"
+    Name = "${var.project_name}-${var.stage_name}-private-rtb"
+    project = var.project_name
+    stage = var.stage_name
   }
 }
 
