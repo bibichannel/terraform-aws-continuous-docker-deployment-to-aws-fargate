@@ -21,6 +21,7 @@ resource "aws_vpc" "vpc" {
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id            = aws_vpc.vpc.id
+  map_public_ip_on_launch = true
   cidr_block        = format("10.%d.0.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}a"
   tags = {
@@ -32,6 +33,7 @@ resource "aws_subnet" "public_subnet_1" {
 
 resource "aws_subnet" "public_subnet_2" {
   vpc_id            = aws_vpc.vpc.id
+  map_public_ip_on_launch = true
   cidr_block        = format("10.%d.1.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}b"
   tags = {

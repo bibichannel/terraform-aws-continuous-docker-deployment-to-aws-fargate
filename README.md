@@ -1,8 +1,8 @@
-# AWS DevOps: Deploy
+# AWS DevOps: provisioning aws infrastructure with Terraform and deploying application to the AWS Cloud
 
 ## Solution architecture
 The following diagram shows the flow of events in the solution:
-
+![Image](static\images\landscape.png)
 ## Introduction
 
 ## AWS Key Components
@@ -24,6 +24,9 @@ The provided Terraform code leverages these AWS services to create an automated 
 14. **Amazon SNS Topic:** Allows publishing and subscribing to notifications and messages.
 15. **IAM Roles for CodePipeline and CodeBuild:** Provides permissions for the pipeline and build processes to access required resources.
 16. **IAM Policies:** Define permissions for roles to access necessary AWS services and resources.
+
+## Github Key Components
+Use github for manage versions, 
 
 ## Project Workflow
 Here's the project workflow for the provided Terraform code that sets up a Continuous Docker Deployment to AWS Fargate from GitHub using Terraform:
