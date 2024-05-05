@@ -2,7 +2,7 @@
 
 ## Solution architecture
 The following diagram shows the flow of events in the solution:
-![Image](static\images\landscape.png)
+![Image](/static/images/landscape.png)
 ## Introduction
 
 ## AWS Key Components

@@ -1,7 +1,7 @@
 ###################### Create Elastic Container Service ##########################
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "{white-hart}"
+  name = "${var.project_name}-${var.stage_name}-ecs-cluster"
 
   setting {
     name  = "containerInsights"
@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "ecs_task_defi" {
 
 
 resource "aws_ecs_service" "ecs_service"{
-    name = "${var.project_name}_${var.stage_name}_ecs"
+    name = "${var.project_name}-${var.stage_name}-ecs"
 
   cluster         = aws_ecs_cluster.foo.id
   task_definition = aws_ecs_task_definition.mongo.arn

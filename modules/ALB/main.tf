@@ -1,7 +1,7 @@
 ###################### Create Application Load Balancer ##########################
 
 resource "aws_lb" "alb" {
-  name               = "${var.project_name}_${var.stage_name}_alb"
+  name               = "${var.project_name}-${var.stage_name}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.sg_alb_id]
@@ -16,7 +16,7 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "target_group" {
-  name     = "${var.project_name}_${var.stage_name}_alb_lb_tg"
+  name     = "${var.project_name}-${var.stage_name}-alb-tg"
   target_type = "ip"
   port     = 8501
   protocol = "HTTP"

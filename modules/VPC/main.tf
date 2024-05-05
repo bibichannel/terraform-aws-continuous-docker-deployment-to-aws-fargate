@@ -150,7 +150,7 @@ resource "aws_route_table_association" "association-private-subnet-2" {
 ###################### Create SGs ##########################
 
 resource "aws_security_group" "alb" {
-  name        = "${var.project_name}_${var.stage_name}_alb"
+  name        = "${var.project_name}-${var.stage_name}-alb"
   description = "controls access to the ALB"
   vpc_id      = aws_vpc.vpc.id
 
@@ -176,7 +176,7 @@ resource "aws_security_group" "alb" {
 
 
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.project_name}_${var.stage_name}_ecs-tasks"
+  name        = "${var.project_name}-${var.stage_name}-ecs-tasks"
   description = "allow inbound access from the ALB only"
   vpc_id      = aws_vpc.vpc.id
 
