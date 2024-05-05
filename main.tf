@@ -15,7 +15,7 @@ provider "aws" {
 }
 
 module "VPC" {
-  source       = "./VPC"
+  source       = "./modules/VPC"
   aws_region   = var.aws_region
   stage_name   = var.stage_name
   project_name = var.project_name
