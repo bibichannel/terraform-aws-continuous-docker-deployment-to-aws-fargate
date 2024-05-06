@@ -1,17 +1,10 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
+locals{
+  tags = {
+    Project = var.project_name
+    CreateBy = var.create_by
+    CreateOn = timestamp()
+    Environment = var.stage_name
   }
-
-  backend "s3" {}
-}
-
-provider "aws" {
-  region      = var.aws_region
-  max_retries = 1
 }
 
 module "VPC" {
@@ -20,6 +13,7 @@ module "VPC" {
   project_name   = var.project_name
   stage_name     = var.stage_name
   container_port = var.container_port
+  tags = local.tags
 }
 
 module "ALB" {
@@ -30,4 +24,5 @@ module "ALB" {
   public_subnet_1_id = module.VPC.public_subnet_1_id
   public_subnet_2_id = module.VPC.public_subnet_2_id
   sg_alb_id          = module.VPC.sg_alb_id
+  tags = local.tags
 }

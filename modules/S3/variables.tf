@@ -1,9 +1,4 @@
 ################ Variables for global ##################
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-}
-
 variable "tags" {
   description = "Tag map for the resource"
   type        = map(string)
@@ -18,9 +13,4 @@ variable "stage_name" {
 variable "project_name" {
   description = "The project name"
   type = string
-}
-
-variable "container_port" {
-  description = "Container port"
-  type = number
 }

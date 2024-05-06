@@ -15,10 +15,34 @@ variable "project_name" {
   type        = string
 }
 
+variable "create_by" {
+  description = "The user run code"
+  type = string
+}
+
 variable "container_port" {
   description = "Container port"
   type        = number
 }
 
+##################### Variables for gihub ####################
+variable "github_owner" {
+  description = "Github owner"
+  type = string
+}
 
+variable "github_repo" {
+  description = "Full repository name"
+  type = string
+}
+
+variable "github_branch" {
+  description = "Branch of github repo"
+  type = string
+}
+
+variable "github_token" {
+  description = "The github webhook secret"
+  type = string
+}
 

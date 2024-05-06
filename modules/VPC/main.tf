@@ -14,11 +14,9 @@ resource "aws_vpc" "vpc" {
   cidr_block           = format("10.%d.0.0/20", local.cidr_block_dot)
   instance_tenancy     = "default"
   enable_dns_hostnames = true
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_subnet" "public_subnet_1" {
@@ -26,11 +24,9 @@ resource "aws_subnet" "public_subnet_1" {
   map_public_ip_on_launch = true
   cidr_block              = format("10.%d.1.0/24", local.cidr_block_dot)
   availability_zone       = "${var.aws_region}a"
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-public-subnet-1"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_subnet" "public_subnet_2" {
@@ -38,62 +34,50 @@ resource "aws_subnet" "public_subnet_2" {
   map_public_ip_on_launch = true
   cidr_block              = format("10.%d.2.0/24", local.cidr_block_dot)
   availability_zone       = "${var.aws_region}b"
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-public-subnet-2"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_subnet" "private_subnet_1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = format("10.%d.3.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}a"
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-private-subnet-1"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_subnet" "private_subnet_2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = format("10.%d.4.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}b"
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-private-subnet-2"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-igw"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 # resource "aws_eip" "eip" {
 #   domain   = "vpc"
 #   depends_on = [aws_internet_gateway.igw]
-#   tags = {
+#   tags = merge({
 #     Name    = "${var.project_name}-${var.stage_name}-eip"
-#     project = var.project_name
-#     environment = var.stage_name
-#   }
+#   }, var.tags)
 # }
 
 # resource "aws_nat_gateway" "natgw" {
 #   subnet_id     = aws_subnet.public_subnet_1et-1.id
 #   allocation_id = aws_eip.eip.id
-#   tags = {
+#   tags = merge({
 #     Name    = "${var.project_name}-${var.stage_name}-natgw"
-#     project = var.project_name
-#     environment = var.stage_name
-#   }
+#   }, var.tags)
 # }
 
 resource "aws_route_table" "public_rtb" {
@@ -102,29 +86,23 @@ resource "aws_route_table" "public_rtb" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-public-rtb"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_route_table" "private_rtb_01" {
   vpc_id = aws_vpc.vpc.id
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-private-rtb-01"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_route_table" "private_rtb_02" {
   vpc_id = aws_vpc.vpc.id
-  tags = {
+  tags = merge({
     Name    = "${var.project_name}-${var.stage_name}-private-rtb-02"
-    project = var.project_name
-    environment = var.stage_name
-  }
+  }, var.tags)
 }
 
 resource "aws_route_table_association" "association-public-subnet-1" {
@@ -168,10 +146,7 @@ resource "aws_security_group" "alb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    project = var.project_name
-    environment = var.stage_name
-  }
+  tags = var.tags
 }
 
 
@@ -194,9 +169,6 @@ resource "aws_security_group" "ecs_tasks" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    project = var.project_name
-    environment = var.stage_name
-  }
+  tags = var.tags
 }
 

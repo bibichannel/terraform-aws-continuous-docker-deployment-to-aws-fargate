@@ -1,9 +1,4 @@
 ################ Variables for global ##################
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-}
-
 variable "tags" {
   description = "Tag map for the resource"
   type        = map(string)
@@ -20,7 +15,8 @@ variable "project_name" {
   type = string
 }
 
-variable "container_port" {
-  description = "Container port"
-  type = number
+################ Variables for S3 ##################
+variable "s3_artifact_bucket_arn" {
+  description = "The ARN of S3 artifact bucket"
+  type = string
 }

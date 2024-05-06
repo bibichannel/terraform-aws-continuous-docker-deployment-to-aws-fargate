@@ -9,10 +9,7 @@ resource "aws_lb" "alb" {
 
   enable_deletion_protection = false
 
-  tags = {
-    project = var.project_name
-    environment = var.stage_name
-  }
+  tags = var.tags
 }
 
 resource "aws_lb_target_group" "target_group" {

@@ -54,6 +54,7 @@ jobs:
           PROJECT_NAME: "workshop-02"
           STAGE_NAME: ${{ github.event.inputs.environment }}
           TERRAFORM_BUCKET_NAME: ${{ secrets.TERRAFORM_BUCKET_NAME }}
+          YOUR_GITHUB_TOKEN: ${{  secrets.YOUR_GITHUB_TOKEN }}
         run: |
           chmod +x setup.sh
           bash setup.sh
