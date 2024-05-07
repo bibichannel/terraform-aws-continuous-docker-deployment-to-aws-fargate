@@ -5,6 +5,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+}
+
 variable "stage_name" {
   description = "The stage name is run"
   type        = string
@@ -27,11 +32,6 @@ variable "s3_artifact_bucket_arn" {
 }
 
 ################ Variables for github ##################
-variable "github_owner" {
-  description = "Github owner"
-  type        = string
-}
-
 variable "github_repo" {
   description = "Full repository name"
   type        = string
@@ -42,13 +42,19 @@ variable "github_branch" {
   type        = string
 }
 
-variable "github_token" {
-  description = "The github webhook secret"
-  type        = string
-}
-
 ################ Variables for Codebuild ##################
-variable "codbuild_name" {
+variable "terraform_codbuild_name" {
   description = "The name of CodeBuild project"
   type        = string
 }
+
+variable "terraform_codebuild_arn" {
+  description = "The ARN of CodeBuild project"
+  type        = string
+}
+
+variable "codestar_connection_arn" {
+  description = "The ARN of CodeStart connection Github thirdparty"
+  type        = string
+}
+

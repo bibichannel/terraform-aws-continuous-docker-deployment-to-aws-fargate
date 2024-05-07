@@ -2,7 +2,6 @@ locals {
   tags = {
     Project     = var.project_name
     CreateBy    = var.create_by
-    CreateOn    = timestamp()
     Environment = var.stage_name
   }
 }
@@ -45,15 +44,16 @@ module "CodeBuild" {
 }
 
 module "CodePipeline" {
-  source                 = "./modules/CodePipeline"
-  tags                   = local.tags
-  project_name           = var.project_name
-  stage_name             = var.stage_name
-  s3_artifact_bucket     = module.S3.artifact_bucket
-  s3_artifact_bucket_arn = module.S3.artifact_bucket_arn
-  github_owner           = var.github_owner
-  github_repo            = var.github_repo
-  github_branch          = var.github_branch
-  github_token           = var.github_token
-  codbuild_name          = module.CodeBuild.codebuild_name
+  source                  = "./modules/CodePipeline"
+  tags                    = local.tags
+  aws_region              = var.aws_region
+  project_name            = var.project_name
+  stage_name              = var.stage_name
+  s3_artifact_bucket      = module.S3.artifact_bucket
+  s3_artifact_bucket_arn  = module.S3.artifact_bucket_arn
+  github_repo             = var.github_repo
+  github_branch           = var.github_branch
+  terraform_codbuild_name = module.CodeBuild.terraform_codebuild_name
+  terraform_codebuild_arn = module.CodeBuild.terraform_codebuild_arn
+  codestar_connection_arn = var.codestar_connection_arn
 }

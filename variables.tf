@@ -17,15 +17,10 @@ variable "project_name" {
 
 variable "create_by" {
   description = "The user run code"
-  type = string
-}
-
-##################### Variables for gihub ####################
-variable "github_owner" {
-  description = "Github owner"
   type        = string
 }
 
+##################### Variables for gihub ####################
 variable "github_repo" {
   description = "Full repository name"
   type        = string
@@ -35,14 +30,13 @@ variable "github_branch" {
   description = "Branch of github repo"
   type        = string
 }
-
-variable "github_token" {
-  description = "The github webhook secret"
-  type        = string
-}
-
 ##################### Variables for ecs ####################
 variable "container_port" {
   description = "Container port"
   type        = number
+}
+
+variable "codestar_connection_arn" {
+  description = "The ARN of CodeStart connection Github thirdparty"
+  type        = string
 }

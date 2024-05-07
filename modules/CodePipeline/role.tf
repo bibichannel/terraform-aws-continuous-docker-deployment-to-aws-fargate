@@ -34,6 +34,12 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   }
 
   statement {
+    effect    = "Allow"
+    actions   = ["codestar-connections:UseConnection"]
+    resources = [var.codestar_connection_arn]
+  }
+
+  statement {
     effect = "Allow"
     actions = [
       "ecr:GetAuthorizationToken",
@@ -53,10 +59,39 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
     effect = "Allow"
     actions = [
+      "ecs:DescribeServices",
+      "ecs:DescribeTaskDefinition",
+      "ecs:DescribeTasks",
+      "ecs:ListTasks",
+      "ecs:RegisterTaskDefinition",
+      "ecs:TagResource",
+      "ecs:UpdateService"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "codedeploy:CreateDeployment",
+      "codedeploy:GetDeployment",
+      "codedeploy:GetApplication",
+      "codedeploy:GetApplicationRevision",
+      "codedeploy:RegisterApplicationRevision",
+      "codedeploy:GetDeploymentConfig",
+      "ecs:RegisterTaskDefinition",
+      "ecs:TagResource"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "codebuild:BatchGetBuilds",
       "codebuild:StartBuild",
     ]
-    resources = ["*"]
+    resources = [var.terraform_codebuild_arn]
   }
 }
 

@@ -2,7 +2,7 @@
 
 ## Solution architecture
 The following diagram shows the flow of events in the solution:
-![Image](/static/images/landscape.png)
+![Image](/static/images/overview.png)
 ## Introduction
 
 ## AWS Key Components
@@ -51,11 +51,10 @@ It's a comprehensive DevOps workflow that ensures continuous deployment of Docke
 ### Prerequisites
 Before we dive into the details of the deployment pipeline, make sure you have the following prerequisites in place:
 
-- **AWS account**: With permissions to create resources specified in the code.
+- **AWS account**
 - **Fork GitHub Repo**: Fork and clone your own [bibichannel/terraform-aws-continuous-docker-deployment-to-aws-fargate](https://github.com/bibichannel/terraform-aws-continuous-docker-deployment-to-aws-fargate) GitHub repository.
-- **GitHub Token**: Create an token in GitHub and provide access to the repo scopes.
+- Create StarConnection from aws console: [link](https://us-east-1.console.aws.amazon.com/codesuite/settings/connections)
 - **Terraform**: Installed on your local machine.
-- **Docker**: Installed on your local machine.
 
 ### Implementation 
 

@@ -13,16 +13,17 @@ resource "aws_codepipeline" "terraform_pipeline" {
     action {
       name             = "Source"
       category         = "Source"
-      owner            = "ThirdParty"
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
       version          = "1"
+      region           = var.aws_region
       output_artifacts = ["source_artifact"]
 
       configuration = {
-        Owner      = var.github_owner
-        Repo       = var.github_repo
-        Branch     = var.github_branch
-        OAuthToken = var.github_token
+        ConnectionArn        = var.codestar_connection_arn
+        FullRepositoryId     = var.github_repo
+        BranchName           = var.github_branch
+        OutputArtifactFormat = "CODE_ZIP"
       }
     }
   }
@@ -40,24 +41,10 @@ resource "aws_codepipeline" "terraform_pipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = var.codbuild_name
+        ProjectName = var.terraform_codbuild_name
       }
     }
   }
-}
 
-resource "aws_codepipeline_webhook" "this" {
-  name            = "${var.project_name}-${var.stage_name}-webhook-github"
-  authentication  = "GITHUB_HMAC"
-  target_action   = "Source"
-  target_pipeline = aws_codepipeline.terraform_pipeline.name
-
-  authentication_configuration {
-    secret_token = var.github_token
-  }
-
-  filter {
-    json_path    = "$.ref"
-    match_equals = "refs/heads/main"
-  }
+  tags = var.tags
 }
