@@ -20,29 +20,29 @@ variable "create_by" {
   type = string
 }
 
-variable "container_port" {
-  description = "Container port"
-  type        = number
-}
-
 ##################### Variables for gihub ####################
 variable "github_owner" {
   description = "Github owner"
-  type = string
+  type        = string
 }
 
 variable "github_repo" {
   description = "Full repository name"
-  type = string
+  type        = string
 }
 
 variable "github_branch" {
   description = "Branch of github repo"
-  type = string
+  type        = string
 }
 
 variable "github_token" {
   description = "The github webhook secret"
-  type = string
+  type        = string
 }
 
+##################### Variables for ecs ####################
+variable "container_port" {
+  description = "Container port"
+  type        = number
+}

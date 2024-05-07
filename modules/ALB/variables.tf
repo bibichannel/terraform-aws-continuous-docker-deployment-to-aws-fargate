@@ -11,25 +11,25 @@ variable "stage_name" {
 
 variable "project_name" {
   description = "The project name"
-  type = string
+  type        = string
 }
 
 variable "vpc_id" {
   description = "The VPC id"
-  type = string
+  type        = string
 }
 
 variable "public_subnet_1_id" {
   description = "Id of public subnet 1"
-  type = string
+  type        = string
 }
 
 variable "public_subnet_2_id" {
   description = "Id of public subnet 2"
-  type = string
+  type        = string
 }
 
 variable "sg_alb_id" {
   description = "The security group id for application LB"
-  type = string
+  type        = string
 }

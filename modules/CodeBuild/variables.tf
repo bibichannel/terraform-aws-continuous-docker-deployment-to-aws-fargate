@@ -12,11 +12,11 @@ variable "stage_name" {
 
 variable "project_name" {
   description = "The project name"
-  type = string
+  type        = string
 }
 
 ################ Variables for S3 ##################
 variable "s3_artifact_bucket_arn" {
   description = "The ARN of S3 artifact bucket"
-  type = string
+  type        = string
 }

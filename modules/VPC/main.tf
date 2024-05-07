@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc" {
   instance_tenancy     = "default"
   enable_dns_hostnames = true
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}"
+    Name = "${var.project_name}-${var.stage_name}"
   }, var.tags)
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block              = format("10.%d.1.0/24", local.cidr_block_dot)
   availability_zone       = "${var.aws_region}a"
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-public-subnet-1"
+    Name = "${var.project_name}-${var.stage_name}-public-subnet-1"
   }, var.tags)
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block              = format("10.%d.2.0/24", local.cidr_block_dot)
   availability_zone       = "${var.aws_region}b"
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-public-subnet-2"
+    Name = "${var.project_name}-${var.stage_name}-public-subnet-2"
   }, var.tags)
 }
 
@@ -44,7 +44,7 @@ resource "aws_subnet" "private_subnet_1" {
   cidr_block        = format("10.%d.3.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}a"
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-private-subnet-1"
+    Name = "${var.project_name}-${var.stage_name}-private-subnet-1"
   }, var.tags)
 }
 
@@ -53,14 +53,14 @@ resource "aws_subnet" "private_subnet_2" {
   cidr_block        = format("10.%d.4.0/24", local.cidr_block_dot)
   availability_zone = "${var.aws_region}b"
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-private-subnet-2"
+    Name = "${var.project_name}-${var.stage_name}-private-subnet-2"
   }, var.tags)
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-igw"
+    Name = "${var.project_name}-${var.stage_name}-igw"
   }, var.tags)
 }
 
@@ -87,21 +87,21 @@ resource "aws_route_table" "public_rtb" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-public-rtb"
+    Name = "${var.project_name}-${var.stage_name}-public-rtb"
   }, var.tags)
 }
 
 resource "aws_route_table" "private_rtb_01" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-private-rtb-01"
+    Name = "${var.project_name}-${var.stage_name}-private-rtb-01"
   }, var.tags)
 }
 
 resource "aws_route_table" "private_rtb_02" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-private-rtb-02"
+    Name = "${var.project_name}-${var.stage_name}-private-rtb-02"
   }, var.tags)
 }
 
@@ -156,9 +156,9 @@ resource "aws_security_group" "ecs_tasks" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    protocol = "tcp"
-    from_port = var.container_port
-    to_port = var.container_port
+    protocol        = "tcp"
+    from_port       = var.container_port
+    to_port         = var.container_port
     security_groups = [aws_security_group.alb.id]
   }
 

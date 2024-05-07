@@ -12,5 +12,5 @@ variable "stage_name" {
 
 variable "project_name" {
   description = "The project name"
-  type = string
+  type        = string
 }

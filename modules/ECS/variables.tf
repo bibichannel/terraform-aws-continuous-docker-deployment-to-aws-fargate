@@ -11,11 +11,11 @@ variable "stage_name" {
 
 variable "project_name" {
   description = "The project name"
-  type = string
+  type        = string
 }
 
 ################ Variables for ALB ##################
 variable "target_group_arn" {
   description = "The ARN of target group"
-  type = string
+  type        = string
 }

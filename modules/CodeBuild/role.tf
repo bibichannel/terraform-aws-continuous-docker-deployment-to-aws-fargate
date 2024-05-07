@@ -29,17 +29,17 @@ data "aws_iam_policy_document" "codebuild_policy" {
   }
 
   statement {
-    effect = "Allow"
-    actions = ["sns:Publish"]
+    effect    = "Allow"
+    actions   = ["sns:Publish"]
     resources = ["*"]
   }
 
   statement {
     effect = "Allow"
     actions = [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
     ]
     resources = ["*"]
   }
@@ -53,7 +53,7 @@ resource "aws_iam_role" "codepbuild_role" {
 
 resource "aws_iam_role_policy" "codebuild_policy" {
   name   = "${var.project_name}-${var.stage_name}-codebuild-policy"
-  role   = aws_iam_role.codepbuild_role
+  role   = aws_iam_role.codepbuild_role.id
   policy = data.aws_iam_policy_document.codebuild_policy.json
 }
 

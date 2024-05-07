@@ -28,24 +28,24 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   }
 
   statement {
-    effect = "Allow"
-    actions = ["sns:Publish"]
+    effect    = "Allow"
+    actions   = ["sns:Publish"]
     resources = ["*"]
   }
 
   statement {
     effect = "Allow"
     actions = [
-        "ecr:GetAuthorizationToken",
-        "ecs:UpdateService",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:GetAuthorizationToken",
-        "ecr:InitiateLayerUpload",
-        "ecr:UploadLayerPart",
-        "ecr:CompleteLayerUpload",
-        "ecr:PutImage"
+      "ecr:GetAuthorizationToken",
+      "ecs:UpdateService",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:GetAuthorizationToken",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:PutImage"
     ]
     resources = ["*"]
   }

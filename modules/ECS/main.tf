@@ -52,8 +52,8 @@ resource "aws_ecs_task_definition" "ecs_task_defi" {
 }
 
 
-resource "aws_ecs_service" "ecs_service"{
-    name = "${var.project_name}-${var.stage_name}-ecs"
+resource "aws_ecs_service" "ecs_service" {
+  name = "${var.project_name}-${var.stage_name}-ecs"
 
   cluster         = aws_ecs_cluster.foo.id
   task_definition = aws_ecs_task_definition.mongo.arn

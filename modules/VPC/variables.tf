@@ -17,10 +17,10 @@ variable "stage_name" {
 
 variable "project_name" {
   description = "The project name"
-  type = string
+  type        = string
 }
 
 variable "container_port" {
   description = "Container port"
-  type = number
+  type        = number
 }
