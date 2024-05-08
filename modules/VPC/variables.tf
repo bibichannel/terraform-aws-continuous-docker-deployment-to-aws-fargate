@@ -20,6 +20,12 @@ variable "project_name" {
   type        = string
 }
 
+variable "enable_nat_gateway" {
+  description = "Specifies to enable nat gateway"
+  type = bool
+}
+
+################ Variables for ECS ##################
 variable "container_port" {
   description = "Container port"
   type        = number
