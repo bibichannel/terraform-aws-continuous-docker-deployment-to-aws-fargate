@@ -15,11 +15,6 @@ variable "project_name" {
   type        = string
 }
 
-variable "enable_application_lb" {
-  description = "Specifies to enable application load balancer"
-  type        = bool
-}
-
 ################ Variables for VPC ##################
 variable "vpc_id" {
   description = "The VPC id"

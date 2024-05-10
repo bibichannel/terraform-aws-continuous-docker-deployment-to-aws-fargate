@@ -64,23 +64,22 @@ resource "aws_internet_gateway" "igw" {
   }, var.tags)
 }
 
-resource "aws_eip" "eip_nat_gateway" {
-  count      = var.enable_nat_gateway ? 1 : 0
-  domain     = "vpc"
-  depends_on = [aws_internet_gateway.igw]
-  tags = merge({
-    Name = "${var.project_name}-${var.stage_name}-eip"
-  }, var.tags)
-}
+# Create Nat gateway
+# resource "aws_eip" "eip_nat_gateway" {
+#   domain     = "vpc"
+#   depends_on = [aws_internet_gateway.igw]
+#   tags = merge({
+#     Name = "${var.project_name}-${var.stage_name}-eip"
+#   }, var.tags)
+# }
 
-resource "aws_nat_gateway" "natgw" {
-  count         = var.enable_nat_gateway ? 1 : 0
-  subnet_id     = aws_subnet.public_subnet_1.id
-  allocation_id = aws_eip.eip_nat_gateway[count.index].id
-  tags = merge({
-    Name = "${var.project_name}-${var.stage_name}-natgw"
-  }, var.tags)
-}
+# resource "aws_nat_gateway" "natgw" {
+#   subnet_id     = aws_subnet.public_subnet_1.id
+#   allocation_id = aws_eip.eip_nat_gateway[count.index].id
+#   tags = merge({
+#     Name = "${var.project_name}-${var.stage_name}-natgw"
+#   }, var.tags)
+# }
 
 resource "aws_route_table" "public_rtb" {
   vpc_id = aws_vpc.vpc.id

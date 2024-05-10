@@ -4,10 +4,6 @@ locals {
     CreateBy    = var.create_by
     Environment = var.stage_name
   }
-  enable_nat_gateway    = false
-  enable_application_lb = true
-  enable_ecs            = false
-
   container_name   = "streamlit-app"
   container_port   = 8501
   container_cpu    = 512
@@ -21,13 +17,11 @@ module "VPC" {
   project_name       = var.project_name
   stage_name         = var.stage_name
   container_port     = local.container_port
-  enable_nat_gateway = local.enable_nat_gateway
 }
 
 module "ALB" {
   source                = "./modules/ALB"
   tags                  = local.tags
-  enable_application_lb = local.enable_application_lb
   project_name          = var.project_name
   stage_name            = var.stage_name
   vpc_id                = module.VPC.vpc_id
@@ -71,7 +65,6 @@ module "CodeBuild" {
 module "ECS" {
   source                   = "./modules/ECS"
   tags                     = local.tags
-  enable_ecs               = local.enable_ecs
   aws_region               = var.aws_region
   project_name             = var.project_name
   stage_name               = var.stage_name

@@ -1,6 +1,5 @@
 ###################### Create Application Load Balancer ##########################
 resource "aws_lb" "alb" {
-  count              = var.enable_application_lb ? 1 : 0
   name               = "${var.project_name}-${var.stage_name}-alb"
   internal           = false
   load_balancer_type = "application"
@@ -13,7 +12,6 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "target_group" {
-  count       = var.enable_application_lb ? 1 : 0
   name        = "${var.project_name}-${var.stage_name}-alb-tg"
   target_type = "ip"
   port        = var.container_port
@@ -33,13 +31,12 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 resource "aws_lb_listener" "lb_listener" {
-  count             = var.enable_application_lb ? 1 : 0
-  load_balancer_arn = aws_lb.alb[0].arn
+  load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.target_group[0].arn
+    target_group_arn = aws_lb_target_group.target_group.arn
     type             = "forward"
   }
 }

@@ -1,6 +1,5 @@
 ###################### Create clusters ##########################
 resource "aws_ecs_cluster" "this" {
-  count = var.enable_ecs ? 1 : 0
   name  = "${var.project_name}-${var.stage_name}-ecs-cluster"
 
   setting {
@@ -11,7 +10,6 @@ resource "aws_ecs_cluster" "this" {
 
 ###################### Create task definitions ##########################
 resource "aws_ecs_task_definition" "this" {
-  count                    = var.enable_ecs ? 1 : 0
   family                   = "service"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -60,10 +58,9 @@ resource "aws_ecs_task_definition" "this" {
 
 ###################### Create Elastic Container Service ##########################
 resource "aws_ecs_service" "this" {
-  count           = var.enable_ecs ? 1 : 0
   name            = "${var.project_name}-${var.stage_name}-ecs"
-  cluster         = aws_ecs_cluster.this[0].id
-  task_definition = aws_ecs_task_definition.this[0].arn
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn
 
   # Environment
   launch_type      = "FARGATE"
