@@ -70,9 +70,9 @@ resource "aws_ecs_service" "this" {
   force_new_deployment = true
   scheduling_strategy  = "REPLICA"
   desired_count        = 2
-  deployment_controller {
-    type = "CODE_DEPLOY"
-  }
+  # deployment_controller {
+  #   type = "CODE_DEPLOY"
+  # }
 
   network_configuration {
     subnets         = [var.private_subnet_1_id, var.private_subnet_2_id]
