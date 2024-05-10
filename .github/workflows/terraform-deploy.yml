@@ -56,7 +56,6 @@ jobs:
           TERRAFORM_BUCKET_NAME: ${{ secrets.TERRAFORM_BUCKET_NAME }}
           CODESTAR_CONNECTION_ARN: ${{  secrets.CODESTAR_CONNECTION_ARN }}
           YOUR_GITHUB_BRANCH: "main"
-          CONTAINER_PORT: 8501
         run: |
           chmod +x setup.sh
           bash setup.sh

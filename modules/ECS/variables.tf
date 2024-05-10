@@ -1,4 +1,9 @@
 ################ Variables for global ##################
+variable "enable_ecs" {
+  description = "Enable/Disable ECS"
+  type        = bool
+}
+
 variable "tags" {
   description = "Tag map for the resource"
   type        = map(string)

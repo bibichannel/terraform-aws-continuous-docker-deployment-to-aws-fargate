@@ -6,6 +6,12 @@ locals {
   }
   enable_nat_gateway    = false
   enable_application_lb = true
+  enable_ecs            = false
+
+  container_name   = "streamlit-app"
+  container_port   = 8501
+  container_cpu    = 512
+  container_memory = 1024
 }
 
 module "VPC" {
@@ -14,7 +20,7 @@ module "VPC" {
   aws_region         = var.aws_region
   project_name       = var.project_name
   stage_name         = var.stage_name
-  container_port     = var.container_port
+  container_port     = local.container_port
   enable_nat_gateway = local.enable_nat_gateway
 }
 
@@ -28,7 +34,7 @@ module "ALB" {
   public_subnet_1_id    = module.VPC.public_subnet_1_id
   public_subnet_2_id    = module.VPC.public_subnet_2_id
   sg_alb_id             = module.VPC.sg_alb_id
-  container_port        = var.container_port
+  container_port        = local.container_port
 }
 
 module "S3" {
@@ -62,6 +68,25 @@ module "CodeBuild" {
   codebuild_lg_name      = module.CloudWatch.codebuild_cloudwatch_log_group_name
 }
 
+module "ECS" {
+  source                   = "./modules/ECS"
+  tags                     = local.tags
+  enable_ecs               = local.enable_ecs
+  aws_region               = var.aws_region
+  project_name             = var.project_name
+  stage_name               = var.stage_name
+  private_subnet_1_id      = module.VPC.private_subnet_1_id
+  private_subnet_2_id      = module.VPC.private_subnet_2_id
+  sg_ecs_tasks_id          = module.VPC.sg_ecs_tasks_id
+  container_name           = local.container_name
+  container_cpu            = local.container_cpu
+  container_memory         = local.container_memory
+  container_port           = local.container_port
+  repository_url           = module.ECR.ecr_repository_url
+  ecs_fargate_task_lg_name = module.CloudWatch.ecs_task_cloudwatch_log_group_name
+  target_group_arn         = module.ALB.target_group_arn
+}
+
 module "CodePipeline" {
   source                  = "./modules/CodePipeline"
   tags                    = local.tags
@@ -79,20 +104,3 @@ module "CodePipeline" {
   ecs_service_name        = module.ECS.ecs_service_name
 }
 
-module "ECS" {
-  source                   = "./modules/ECS"
-  tags                     = local.tags
-  aws_region               = var.aws_region
-  project_name             = var.project_name
-  stage_name               = var.stage_name
-  private_subnet_1_id      = module.VPC.private_subnet_1_id
-  private_subnet_2_id      = module.VPC.private_subnet_2_id
-  sg_ecs_tasks_id          = module.VPC.sg_ecs_tasks_id
-  container_name           = var.container_name
-  container_cpu            = var.container_cpu
-  container_memory         = var.container_memory
-  container_port           = var.container_port
-  repository_url           = module.ECR.ecr_repository_url
-  ecs_fargate_task_lg_name = module.CloudWatch.ecs_task_cloudwatch_log_group_name
-  target_group_arn         = module.ALB.target_group_arn
-}

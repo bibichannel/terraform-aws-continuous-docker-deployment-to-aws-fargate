@@ -1,14 +1,16 @@
 #!/bin/bash
 
 cat <<EOF >> terraform.tfvars
+# Variables pass from host's environment
 aws_region="$AWS_REGION"
-project_name="$PROJECT_NAME"
-stage_name="$STAGE_NAME"
 create_by="$GITHUB_ACTOR"
 github_repo="$GITHUB_REPOSITORY"
+
+# Variables pass from workflow action, define in workflow file.
+project_name="$PROJECT_NAME"
+stage_name="$STAGE_NAME"
 github_branch="$YOUR_GITHUB_BRANCH"
 codestar_connection_arn="$CODESTAR_CONNECTION_ARN"
-container_port=$CONTAINER_PORT
 EOF
 
 cat <<EOF >> vars.tfbackend
