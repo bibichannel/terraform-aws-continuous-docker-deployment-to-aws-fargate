@@ -55,6 +55,7 @@ jobs:
           STAGE_NAME: ${{ github.event.inputs.environment }}
           TERRAFORM_BUCKET_NAME: ${{ secrets.TERRAFORM_BUCKET_NAME }}
           CODESTAR_CONNECTION_ARN: ${{  secrets.CODESTAR_CONNECTION_ARN }}
+          YOUR_GITHUB_REPOSITORY: "bibichannel/streamlit-app"
           YOUR_GITHUB_BRANCH: "main"
         run: |
           chmod +x setup.sh
