@@ -6,7 +6,7 @@ project_name="$PROJECT_NAME"
 stage_name="$STAGE_NAME"
 create_by="$GITHUB_ACTOR"
 github_repo="$GITHUB_REPOSITORY"
-github_branch="main"
+github_branch="$YOUR_GITHUB_BRANCH"
 codestar_connection_arn="$CODESTAR_CONNECTION_ARN"
 container_port=$CONTAINER_PORT
 EOF

@@ -58,3 +58,13 @@ variable "codestar_connection_arn" {
   type        = string
 }
 
+################ Variables for Codebuild ##################
+variable "cluster_name" {
+  description = "The Cluster name"
+  type        = string
+}
+
+variable "ecs_service_name" {
+  description = "The ecs service name"
+  type        = string
+}

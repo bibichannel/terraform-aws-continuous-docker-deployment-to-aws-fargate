@@ -1,6 +1,5 @@
-###################### Create Elastic Container Service ##########################
-
-resource "aws_ecs_cluster" "ecs_cluster" {
+###################### Create clusters ##########################
+resource "aws_ecs_cluster" "this" {
   name = "${var.project_name}-${var.stage_name}-ecs-cluster"
 
   setting {
@@ -9,71 +8,82 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   }
 }
 
-resource "aws_ecs_task_definition" "ecs_task_defi" {
-  family = "service"
+###################### Create task definitions ##########################
+resource "aws_ecs_task_definition" "this" {
+  family                   = "service"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = var.container_cpu
+  memory                   = var.container_memory
+  execution_role_arn       = aws_iam_role.task_exec_role.arn
   container_definitions = jsonencode([
     {
-      name      = "first"
-      image     = "service-first"
-      cpu       = 10
-      memory    = 512
+      name      = var.container_name
+      image     = "${var.repository_url}:latest"
+      cpu       = var.container_cpu
+      memory    = var.container_memory
       essential = true
       portMappings = [
         {
-          containerPort = 80
-          hostPort      = 80
+          containerPort = var.container_port
+          hostPort      = var.container_port
+          protocol      = "tcp"
         }
       ]
-    },
-    {
-      name      = "second"
-      image     = "service-second"
-      cpu       = 10
-      memory    = 256
-      essential = true
-      portMappings = [
-        {
-          containerPort = 443
-          hostPort      = 443
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = var.ecs_fargate_task_lg_name
+          awslogs-stream-prefix = "ecs"
+          awslogs-region        = var.aws_region
         }
-      ]
+      }
+      health_check = {
+        command : ["CMD-SHELL", "curl -f http://localhost/8501 || exit 1"]
+        internal : 30
+        timeout : 5
+        retries : 3
+        startPeriod : 60
+      }
     }
   ])
 
-  volume {
-    name      = "service-storage"
-    host_path = "/ecs/service-storage"
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
   }
 
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
-  }
+  tags = var.tags
 }
 
+###################### Create Elastic Container Service ##########################
+resource "aws_ecs_service" "this" {
+  name            = "${var.project_name}-${var.stage_name}-ecs"
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn
 
-resource "aws_ecs_service" "ecs_service" {
-  name = "${var.project_name}-${var.stage_name}-ecs"
+  # Environment
+  launch_type      = "FARGATE"
+  platform_version = "LATEST"
 
-  cluster         = aws_ecs_cluster.foo.id
-  task_definition = aws_ecs_task_definition.mongo.arn
-  desired_count   = 3
-  iam_role        = aws_iam_role.foo.arn
-  depends_on      = [aws_iam_role_policy.foo]
+  # Deployment configuration
+  force_new_deployment = true
+  scheduling_strategy  = "REPLICA"
+  desired_count        = 2
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
 
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
+  network_configuration {
+    subnets         = [var.private_subnet_1_id, var.private_subnet_2_id]
+    security_groups = [var.sg_ecs_tasks_id]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.foo.arn
-    container_name   = "mongo"
-    container_port   = 8080
+    target_group_arn = var.target_group_arn
+    container_name   = var.container_name
+    container_port   = var.container_port
   }
 
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
-  }
+  tags = var.tags
 }

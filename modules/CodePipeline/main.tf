@@ -46,5 +46,23 @@ resource "aws_codepipeline" "terraform_pipeline" {
     }
   }
 
+  stage {
+    name = "Deploy"
+    action {
+      name            = "Deploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      version         = "1"
+      input_artifacts = ["build_artifact"]
+
+      configuration = {
+        ClusterName = var.cluster_name
+        ServiceName = var.ecs_service_name
+        FileName    = "imagedefinitions.json"
+      }
+    }
+  }
+
   tags = var.tags
 }

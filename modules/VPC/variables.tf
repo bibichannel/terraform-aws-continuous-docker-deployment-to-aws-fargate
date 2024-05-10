@@ -22,7 +22,7 @@ variable "project_name" {
 
 variable "enable_nat_gateway" {
   description = "Specifies to enable nat gateway"
-  type = bool
+  type        = bool
 }
 
 ################ Variables for ECS ##################

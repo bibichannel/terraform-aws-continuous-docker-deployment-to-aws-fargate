@@ -31,11 +31,27 @@ variable "github_branch" {
   type        = string
 }
 ##################### Variables for ecs ####################
+variable "container_name" {
+  description = "Container name"
+  type        = string
+}
+
 variable "container_port" {
   description = "Container port"
   type        = number
 }
 
+variable "container_cpu" {
+  description = "The container cpu unit"
+  type        = number
+}
+
+variable "container_memory" {
+  description = "The container memory unit"
+  type        = number
+}
+
+##################### Variables for codepipeline ####################
 variable "codestar_connection_arn" {
   description = "The ARN of CodeStart connection Github thirdparty"
   type        = string

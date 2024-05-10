@@ -1,4 +1,3 @@
-################ Variables for global ##################
 variable "tags" {
   description = "Tag map for the resource"
   type        = map(string)

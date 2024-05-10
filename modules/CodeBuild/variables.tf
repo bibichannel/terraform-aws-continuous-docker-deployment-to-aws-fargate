@@ -20,3 +20,15 @@ variable "s3_artifact_bucket_arn" {
   description = "The ARN of S3 artifact bucket"
   type        = string
 }
+
+################ Variables for ECR ##################
+variable "ecr_repository_url" {
+  description = "The URL of ECR"
+  type        = string
+}
+
+################ Variables for Cloudwatch ##################
+variable "codebuild_lg_name" {
+  description = "The log group name of codebuild"
+  type        = string
+}

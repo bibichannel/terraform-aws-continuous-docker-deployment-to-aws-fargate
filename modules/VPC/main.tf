@@ -65,20 +65,20 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "eip_nat_gateway" {
-  count    = var.enable_nat_gateway ? 1 : 0
-  domain   = "vpc"
+  count      = var.enable_nat_gateway ? 1 : 0
+  domain     = "vpc"
   depends_on = [aws_internet_gateway.igw]
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-eip"
+    Name = "${var.project_name}-${var.stage_name}-eip"
   }, var.tags)
 }
 
 resource "aws_nat_gateway" "natgw" {
-  count    = var.enable_nat_gateway ? 1 : 0
-  subnet_id     = aws_subnet.public_subnet_1et-1.id
-  allocation_id = aws_eip.eip_nat_gateway.id
+  count         = var.enable_nat_gateway ? 1 : 0
+  subnet_id     = aws_subnet.public_subnet_1.id
+  allocation_id = aws_eip.eip_nat_gateway[count.index].id
   tags = merge({
-    Name    = "${var.project_name}-${var.stage_name}-natgw"
+    Name = "${var.project_name}-${var.stage_name}-natgw"
   }, var.tags)
 }
 

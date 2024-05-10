@@ -18,6 +18,18 @@ resource "aws_codebuild_project" "terraform_codebuild" {
     compute_type    = "BUILD_GENERAL1_SMALL"
     image           = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
     privileged_mode = true
+
+    environment_variable {
+      name  = "REPOSITORY_URL"
+      value = var.ecr_repository_url
+    }
+  }
+
+  logs_config {
+    cloudwatch_logs {
+      group_name  = var.codebuild_lg_name
+      stream_name = "codebuild"
+    }
   }
 
   tags = var.tags
