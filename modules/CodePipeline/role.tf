@@ -59,13 +59,16 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "ecs:DescribeServices",
-      "ecs:DescribeTaskDefinition",
+      "ecs:ListClusters",
+      "ecs:ListTaskDefinitions",
+      "ecs:ListContainerInstances",
+      "ecs:RunTask",
+      "ecs:StopTask",
       "ecs:DescribeTasks",
-      "ecs:ListTasks",
+      "ecs:DescribeContainerInstances",
+      "ecs:DescribeTaskDefinition",
       "ecs:RegisterTaskDefinition",
-      "ecs:TagResource",
-      "ecs:UpdateService"
+      "ecs:DeregisterTaskDefinition"
     ]
     resources = ["*"]
   }

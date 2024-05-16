@@ -11,24 +11,38 @@ locals {
 }
 
 module "VPC" {
-  source             = "./modules/VPC"
-  tags               = local.tags
-  aws_region         = var.aws_region
-  project_name       = var.project_name
-  stage_name         = var.stage_name
-  container_port     = local.container_port
+  source         = "./modules/VPC"
+  tags           = local.tags
+  aws_region     = var.aws_region
+  project_name   = var.project_name
+  stage_name     = var.stage_name
+  container_port = local.container_port
+}
+
+module "Endpoint" {
+  source = "./modules/Endpoint"
+  tags           = local.tags
+  aws_region     = var.aws_region
+  project_name   = var.project_name
+  stage_name     = var.stage_name
+  vpc_id = module.VPC.vpc_id
+  private_subnet_1_id = module.VPC.public_subnet_1_id
+  private_subnet_2_id = module.VPC.public_subnet_2_id
+  private_rtb_01_id = module.VPC.private_rtb_01_id
+  private_rtb_02_id = module.VPC.private_rtb_02_id
+  sg_ecr_endpoint_id = module.VPC.sg_ecr_endpoint_id
 }
 
 module "ALB" {
-  source                = "./modules/ALB"
-  tags                  = local.tags
-  project_name          = var.project_name
-  stage_name            = var.stage_name
-  vpc_id                = module.VPC.vpc_id
-  public_subnet_1_id    = module.VPC.public_subnet_1_id
-  public_subnet_2_id    = module.VPC.public_subnet_2_id
-  sg_alb_id             = module.VPC.sg_alb_id
-  container_port        = local.container_port
+  source             = "./modules/ALB"
+  tags               = local.tags
+  project_name       = var.project_name
+  stage_name         = var.stage_name
+  vpc_id             = module.VPC.vpc_id
+  public_subnet_1_id = module.VPC.public_subnet_1_id
+  public_subnet_2_id = module.VPC.public_subnet_2_id
+  sg_alb_id          = module.VPC.sg_alb_id
+  container_port     = local.container_port
 }
 
 module "S3" {

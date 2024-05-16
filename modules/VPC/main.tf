@@ -11,7 +11,7 @@ locals {
 ###################### Create VPC ##########################
 
 resource "aws_vpc" "vpc" {
-  cidr_block           = format("10.%d.0.0/20", local.cidr_block_dot)
+  cidr_block           = format("10.%d.0.0/16", local.cidr_block_dot)
   instance_tenancy     = "default"
   enable_dns_hostnames = true
   tags = merge({
@@ -173,3 +173,27 @@ resource "aws_security_group" "ecs_tasks" {
   tags = var.tags
 }
 
+
+# The security group must allow inbound HTTPS (port 443) 
+# traffic from the resources in your VPC that communicate with the service.
+resource "aws_security_group" "ecr_endpoint" {
+  name        = "${var.project_name}-${var.stage_name}-ecr-endpoint"
+  description = "allow traffic from vpc to aws services"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = "443"
+    to_port         = "443"
+    cidr_blocks = [format("10.%d.0.0/16", local.cidr_block_dot)]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = var.tags
+}
