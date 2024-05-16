@@ -20,17 +20,17 @@ module "VPC" {
 }
 
 module "Endpoint" {
-  source = "./modules/Endpoint"
-  tags           = local.tags
-  aws_region     = var.aws_region
-  project_name   = var.project_name
-  stage_name     = var.stage_name
-  vpc_id = module.VPC.vpc_id
+  source              = "./modules/Endpoint"
+  tags                = local.tags
+  aws_region          = var.aws_region
+  project_name        = var.project_name
+  stage_name          = var.stage_name
+  vpc_id              = module.VPC.vpc_id
   private_subnet_1_id = module.VPC.public_subnet_1_id
   private_subnet_2_id = module.VPC.public_subnet_2_id
-  private_rtb_01_id = module.VPC.private_rtb_01_id
-  private_rtb_02_id = module.VPC.private_rtb_02_id
-  sg_ecr_endpoint_id = module.VPC.sg_ecr_endpoint_id
+  private_rtb_01_id   = module.VPC.private_rtb_01_id
+  private_rtb_02_id   = module.VPC.private_rtb_02_id
+  sg_ecr_endpoint_id  = module.VPC.sg_ecr_endpoint_id
 }
 
 module "ALB" {

@@ -4,18 +4,19 @@
 # and com.amazonaws.region.ecr.api Amazon ECR VPC endpoints 
 # as well as the Amazon S3 gateway endpoint to take advantage of this feature
 
+#Create endpoint for services:
 # com.amazonaws.REGION.s3
 # com.amazonaws.REGION.ecr.dkr
 # com.amazonaws.REGION.ecr.api
-
+# com.amazonaws.REGION.logs
 
 ###################### Create S3 gateway endpoint ##########################
 resource "aws_vpc_endpoint" "s3" {
-  service_name = "com.amazonaws.${var.aws_region}.s3"
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
-  vpc_id       = var.vpc_id
-  route_table_ids = [var.private_rtb_01_id, var.private_rtb_02_id]
-  tags = var.tags
+  vpc_id            = var.vpc_id
+  route_table_ids   = [var.private_rtb_01_id, var.private_rtb_02_id]
+  tags              = var.tags
 }
 
 ###################### Create ECR DKR endpoint ##########################
@@ -23,13 +24,13 @@ resource "aws_vpc_endpoint" "s3" {
 # Docker client commands such as push and pull use this endpoint.
 
 resource "aws_vpc_endpoint" "ecr_dkr_endpoint" {
-  service_name = "com.amazonaws.${var.aws_region}.ecr.dkr"
-  vpc_endpoint_type = "Interface"
-  vpc_id       = var.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.dkr"
+  vpc_endpoint_type   = "Interface"
+  vpc_id              = var.vpc_id
   private_dns_enabled = true
-  security_group_ids = [var.sg_ecr_endpoint_id]
-  subnet_ids = [var.private_subnet_1_id, var.private_subnet_2_id]
-  tags = var.tags
+  security_group_ids  = [var.sg_ecr_endpoint_id]
+  subnet_ids          = [var.private_subnet_1_id, var.private_subnet_2_id]
+  tags                = var.tags
 }
 
 ###################### Create ECR API endpoint ##########################
@@ -37,11 +38,24 @@ resource "aws_vpc_endpoint" "ecr_dkr_endpoint" {
 # API actions such as DescribeImages and CreateRepository go to this endpoint.
 
 resource "aws_vpc_endpoint" "ecr_api_endpoint" {
-  vpc_id       = var.vpc_id
-  service_name = "com.amazonaws.${var.aws_region}.ecr.api"
-  vpc_endpoint_type = "Interface"
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+  vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
-  security_group_ids = [var.sg_ecr_endpoint_id]
-  subnet_ids = [var.private_subnet_1_id, var.private_subnet_2_id]
-  tags = var.tags
+  security_group_ids  = [var.sg_ecr_endpoint_id]
+  subnet_ids          = [var.private_subnet_1_id, var.private_subnet_2_id]
+  tags                = var.tags
+}
+
+###################### Create Cloudwatch API endpoint ##########################
+# If You don't create CloudWatch api endpoint. You met error: 
+# ResourceInitializationError: failed to validate logger args: : signal: killed
+resource "aws_vpc_endpoint" "logs_api_endpoint" {
+  vpc_id              = var.vpc_id
+  service_name        = "com.amazonaws.${var.aws_region}.logs"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  security_group_ids  = [var.sg_ecr_endpoint_id]
+  subnet_ids          = [var.private_subnet_1_id, var.private_subnet_2_id]
+  tags                = var.tags
 }

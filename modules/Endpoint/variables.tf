@@ -38,12 +38,12 @@ variable "private_subnet_2_id" {
 
 variable "private_rtb_01_id" {
   description = "The id of private route table 01"
-  type = string
+  type        = string
 }
 
 variable "private_rtb_02_id" {
   description = "The id of private route table 01"
-  type = string
+  type        = string
 }
 
 variable "sg_ecr_endpoint_id" {

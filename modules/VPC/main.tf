@@ -182,9 +182,9 @@ resource "aws_security_group" "ecr_endpoint" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    protocol        = "tcp"
-    from_port       = "443"
-    to_port         = "443"
+    protocol    = "tcp"
+    from_port   = "443"
+    to_port     = "443"
     cidr_blocks = [format("10.%d.0.0/16", local.cidr_block_dot)]
   }
 
