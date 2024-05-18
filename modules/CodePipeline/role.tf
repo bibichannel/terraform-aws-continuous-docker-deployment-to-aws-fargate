@@ -13,18 +13,9 @@ data "aws_iam_policy_document" "codepipeline_assume_role" {
 
 data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-      "s3:GetBucketVersioning",
-      "s3:PutObjectAcl",
-      "s3:PutObject",
-    ]
-    resources = [
-      var.s3_artifact_bucket_arn,
-      "${var.s3_artifact_bucket_arn}/*"
-    ]
+    effect    = "Allow"
+    actions   = ["s3:*"]
+    resources = ["*"]
   }
 
   statement {
@@ -43,11 +34,9 @@ data "aws_iam_policy_document" "codepipeline_policy" {
     effect = "Allow"
     actions = [
       "ecr:GetAuthorizationToken",
-      "ecs:UpdateService",
       "ecr:BatchCheckLayerAvailability",
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
-      "ecr:GetAuthorizationToken",
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
@@ -57,34 +46,8 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   }
 
   statement {
-    effect = "Allow"
-    actions = [
-      "ecs:ListClusters",
-      "ecs:ListTaskDefinitions",
-      "ecs:ListContainerInstances",
-      "ecs:RunTask",
-      "ecs:StopTask",
-      "ecs:DescribeTasks",
-      "ecs:DescribeContainerInstances",
-      "ecs:DescribeTaskDefinition",
-      "ecs:RegisterTaskDefinition",
-      "ecs:DeregisterTaskDefinition"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "codedeploy:CreateDeployment",
-      "codedeploy:GetDeployment",
-      "codedeploy:GetApplication",
-      "codedeploy:GetApplicationRevision",
-      "codedeploy:RegisterApplicationRevision",
-      "codedeploy:GetDeploymentConfig",
-      "ecs:RegisterTaskDefinition",
-      "ecs:TagResource"
-    ]
+    effect    = "Allow"
+    actions   = ["ecs:*"]
     resources = ["*"]
   }
 
@@ -95,6 +58,36 @@ data "aws_iam_policy_document" "codepipeline_policy" {
       "codebuild:StartBuild",
     ]
     resources = [var.terraform_codebuild_arn]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["cloudwatch:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:ModifyListener",
+      "elasticloadbalancing:DescribeRules",
+      "elasticloadbalancing:ModifyRule"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = ["*"]
   }
 }
 
