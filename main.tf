@@ -4,10 +4,11 @@ locals {
     CreateBy    = var.create_by
     Environment = var.stage_name
   }
-  container_name   = "streamlit-app"
-  container_port   = 8501
-  container_cpu    = 512
-  container_memory = 1024
+  container_name     = "streamlit-app"
+  container_port     = 8501
+  container_cpu      = 512
+  container_memory   = 1024
+  notification_email = "trung.lykhanh150901@gmail.com"
 }
 
 module "VPC" {
@@ -111,3 +112,19 @@ module "CodePipeline" {
   ecs_service_name        = module.ECS.ecs_service_name
 }
 
+module "SNS" {
+  source             = "./modules/SNS"
+  project_name       = var.project_name
+  stage_name         = var.stage_name
+  account_id         = var.account_id
+  tags               = local.tags
+  notification_email = local.notification_email
+}
+
+module "EventBridge" {
+  source        = "./modules/EventBridge"
+  project_name  = var.project_name
+  stage_name    = var.stage_name
+  tags          = local.tags
+  sns_topic_arn = module.SNS.sns_topic_arn
+}

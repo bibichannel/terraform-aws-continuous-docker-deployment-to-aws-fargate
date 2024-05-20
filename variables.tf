@@ -4,6 +4,11 @@ variable "aws_region" {
   type        = string
 }
 
+variable "account_id" {
+  description = "Account ID"
+  type        = string
+}
+
 variable "stage_name" {
   description = "Name of stage run [staging, prod]"
   default     = "staging"

@@ -14,3 +14,9 @@ variable "project_name" {
   description = "The project name"
   type        = string
 }
+
+################ Variables of SNS ##################
+variable "sns_topic_arn" {
+  description = "SNS topic's arn"
+  type        = string
+}

@@ -15,8 +15,12 @@ variable "project_name" {
   type        = string
 }
 
-####
 variable "account_id" {
   description = "Account id of aws"
-  type = string
+  type        = string
+}
+
+variable "notification_email" {
+  description = "The email received notifications"
+  type        = string
 }

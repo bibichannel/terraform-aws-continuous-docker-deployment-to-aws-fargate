@@ -4,6 +4,7 @@ cat <<EOF >> terraform.tfvars
 # Variables pass from host's environment
 aws_region="$AWS_REGION"
 create_by="$GITHUB_ACTOR"
+account_id="$AWS_ACCOUNT_ID"
 
 # Variables pass from workflow action, define in workflow file.
 project_name="$PROJECT_NAME"
