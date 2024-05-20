@@ -45,9 +45,7 @@ jobs:
       
       - name: Get account id
         run: |
-          aws sts get-caller-identity --query Account
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-          echo $ACCOUNT_ID
           echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
 
       - name: Setup Terraform
